@@ -1,389 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit Feedback</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --grad-start: #6366f1;
-    --grad-end: #a855f7;
-    --accent: #6366f1;
-    --text-dark: #1e1b2e;
-    --error: #e11d48;
-    --success: #16a34a;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    padding: 2rem 1rem;
-    min-height: 100vh;
-    margin: 0;
-    background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
-    background-attachment: fixed;
-    position: relative;
-    color: var(--text-dark);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image:
-      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.12) 0%, transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(255,255,255,0.10) 0%, transparent 40%),
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .card-wrap {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 460px;
-  }
-
-  form {
-    background: rgba(255, 255, 255, 0.97);
-    padding: 2.5rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(30, 20, 60, 0.35), 0 2px 8px rgba(0,0,0,0.06);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    animation: floatIn 0.6s ease;
-  }
-
-  @keyframes floatIn {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .icon-badge {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
-  }
-
-  .icon-badge svg { width: 26px; height: 26px; stroke: white; }
-
-  h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0 0 6px;
-    color: var(--text-dark);
-    text-align: center;
-  }
-
-  .subtitle {
-    text-align: center;
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 1.75rem;
-  }
-
-  .field {
-    margin-bottom: 16px;
-  }
-
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: #4b5563;
-    margin-bottom: 6px;
-  }
-
-  input, textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 15px;
-    font-family: 'Inter', sans-serif;
-    background: #f9fafb;
-    transition: all 0.2s ease;
-  }
-
-  textarea { min-height: 100px; resize: vertical; }
-
-  input:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: white;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
-  }
-
-  input[type="file"] {
-    padding: 10px 14px;
-    cursor: pointer;
-    font-size: 13px;
-    color: #6b7280;
-  }
-
-  button[type="submit"] {
-    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
-    color: white;
-    border: none;
-    padding: 14px 20px;
-    margin-top: 6px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    width: 100%;
-    transition: all 0.25s ease;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  button[type="submit"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(99, 102, 241, 0.45);
-  }
-
-  button[type="submit"]:active { transform: translateY(0); }
-
-  button[type="submit"].loading {
-    pointer-events: none;
-    opacity: 0.8;
-  }
-
-  .spinner {
-    display: none;
-    width: 16px; height: 16px;
-    border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-
-  button.loading .spinner { display: inline-block; }
-  button.loading .btn-text { display: none; }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  #responseMessage {
-    margin-top: 12px;
-    font-size: 13px;
-    color: var(--error);
-    text-align: center;
-    min-height: 16px;
-  }
-
-  footer {
-    text-align: center;
-    margin-top: 22px;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.85);
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Modal */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(20, 15, 40, 0.55);
-    backdrop-filter: blur(4px);
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-content {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    padding: 2.5rem 2rem;
-    max-width: 360px;
-    width: 90%;
-    text-align: center;
-    animation: popIn 0.3s ease;
-  }
-
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .modal-icon {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-  }
-
-  .modal-icon svg { width: 28px; height: 28px; stroke: white; }
-
-  #modalMessage {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-dark);
-    margin: 0 0 20px;
-    font-family: 'Poppins', sans-serif;
-  }
-
-  #modalOkayButton {
-    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
-    color: white;
-    border: none;
-    padding: 10px 28px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.2s ease;
-  }
-
-  #modalOkayButton:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(99,102,241,0.4); }
-</style>
+  <title>Submit Feedback</title>
+  <style>
+    body { 
+      font-family: 'Roboto', sans-serif; 
+      padding: 2rem; 
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      color: #333;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    form { 
+      background: rgba(255, 255, 255, 0.95); 
+      max-width: 500px; 
+      margin: 2rem auto; 
+      padding: 2rem; 
+      border-radius: 16px; 
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+    input, textarea { 
+      width: 100%; 
+      margin-top: 10px; 
+      padding: 12px; 
+      border: 1px solid rgba(221, 221, 221, 0.8); 
+      border-radius: 8px; 
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    button { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white; 
+      border: none; 
+      padding: 12px 20px; 
+      margin-top: 15px; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-size: 16px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #4a5568;
+      text-align: center;
+    }
+    #responseMessage {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #e11d48;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      position: relative;
+      z-index: 1;
+    }
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgb(0,0,0); 
+      background-color: rgba(0,0,0,0.4); 
+      padding-top: 60px;
+    }
+    .modal-content {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-
-<div class="card-wrap">
-  <form id="feedbackForm">
-    <div class="icon-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </div>
-    <h2>We'd Love Your Feedback</h2>
-    <p class="subtitle">Takes less than a minute to fill out</p>
-
-    <div class="field">
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="Your name" required>
-    </div>
-
-    <div class="field">
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="you@example.com" required>
-    </div>
-
-    <div class="field">
-      <label for="message">Message</label>
-      <textarea id="message" placeholder="Tell us what you think..." required></textarea>
-    </div>
-
-    <div class="field">
-      <label for="file">Attachment (optional, PDF only)</label>
-      <input type="file" id="file" accept="application/pdf">
-    </div>
-
-    <button type="submit" id="submitBtn">
-      <span class="spinner"></span>
-      <span class="btn-text">Submit Feedback</span>
-    </button>
+  <form id="feedbackForm 1">
+    <h2>Feedback Form Test 3</h2>
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" placeholder="Your Message" required></textarea>
+    <input type="file" id="file" accept="application/pdf">
+    <button type="submit">Submit</button>
     <p id="responseMessage"></p>
   </form>
 
-  <footer>
-    <p>Created by Sidd</p>
-  </footer>
-</div>
-
-<!-- Modal -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 6 9 17l-5-5"/>
-      </svg>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="modalMessage">Feedback submitted successfully!</p>
+      <button id="modalOkayButton">Okay</button>
     </div>
-    <p id="modalMessage">Feedback submitted successfully!</p>
-    <button id="modalOkayButton">Okay</button>
   </div>
-</div>
 
-<script>
-  const FEEDBACK_API_URL = 'https://asfftxiuh8.execute-api.eu-north-1.amazonaws.com/feed';
+  <footer>
+    <p>Created by KNokoe</p>
+  </footer>
 
-  const submitBtn = document.getElementById('submitBtn');
+  <script>
+    const FEEDBACK_API_URL = 's3://feedback-ui-sidd/index.html';
 
-  document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    const file = document.getElementById('file').files[0];
+    document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const file = document.getElementById('file').files[0];
 
-    submitBtn.classList.add('loading');
+      let file_base64 = null;
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async () => {
+          file_base64 = reader.result.split(',')[1];
+          await submitFeedback(name, email, message, file_base64);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        await submitFeedback(name, email, message, null);
+      }
+    });
 
-    let file_base64 = null;
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        file_base64 = reader.result.split(',')[1];
-        await submitFeedback(name, email, message, file_base64);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      await submitFeedback(name, email, message, null);
-    }
-  });
-
-  async function submitFeedback(name, email, message, file_base64) {
-    try {
-      const res = await fetch(FEEDBACK_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message, file_base64 })
-      });
-      const data = await res.json();
-      showModal(data.message || 'Feedback submitted successfully!');
-    } catch (err) {
-      showModal('Submission failed. Please try again later.');
-    } finally {
-      submitBtn.classList.remove('loading');
-    }
-  }
-
-  function showModal(message) {
-    const modal = document.getElementById('myModal');
-    const modalMessage = document.getElementById('modalMessage');
-    const modalOkayButton = document.getElementById('modalOkayButton');
-
-    modalMessage.innerText = message;
-    modal.style.display = 'flex';
-
-    modalOkayButton.onclick = function() {
-      modal.style.display = 'none';
-      location.reload();
+    async function submitFeedback(name, email, message, file_base64) {
+      try {
+        const res = await fetch(FEEDBACK_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message, file_base64 })
+        });
+        const data = await res.json();
+        showModal(data.message || 'Feedback submitted successfully!');
+      } catch (err) {
+        showModal('Submission failed. Please try again later.');
+      }
     }
 
-    window.onclick = function(event) {
-      if (event.target == modal) {
+    function showModal(message) {
+      const modal = document.getElementById('myModal');
+      const modalMessage = document.getElementById('modalMessage');
+      const modalOkayButton = document.getElementById('modalOkayButton');
+
+      modalMessage.innerText = message;
+      modal.style.display = 'block';
+
+      modalOkayButton.onclick = function() {
         modal.style.display = 'none';
         location.reload();
       }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+          location.reload();
+        }
+      }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
