@@ -64,7 +64,6 @@ GitHub Push → GitHub Actions → S3 + CloudFront Invalidate
 │       └── deploy.yml
 ```
 
----
 
 ---
 
